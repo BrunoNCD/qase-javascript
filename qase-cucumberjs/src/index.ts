@@ -10,7 +10,7 @@ import chalk from 'chalk';
 import crypto from 'crypto';
 import { execSync } from 'child_process';
 import fs from 'fs';
-import { io } from '@cucumber/messages/dist/src/messages';
+import { TestStepResultStatus } from '@cucumber/messages';
 import mime from 'mime-types';
 import moment from 'moment';
 import os from 'os';
@@ -18,7 +18,6 @@ import path from 'path';
 import IEnvelope = io.cucumber.messages.IEnvelope;
 import ITestCaseFinished = io.cucumber.messages.ITestCaseFinished;
 import ITestCaseStarted = io.cucumber.messages.ITestCaseStarted;
-import Status = io.cucumber.messages.TestStepFinished.TestStepResult.Status;
 
 interface Config {
     enabled: boolean;
@@ -44,14 +43,14 @@ interface Test {
     lastAstNodeId: string | null;
 }
 
-const StatusMapping: Record<Status, ResultCreateStatusEnum | null> = {
-    [Status.PASSED]: ResultCreateStatusEnum.PASSED,
-    [Status.FAILED]: ResultCreateStatusEnum.FAILED,
-    [Status.SKIPPED]: ResultCreateStatusEnum.SKIPPED,
-    [Status.AMBIGUOUS]: null,
-    [Status.PENDING]: null,
-    [Status.UNDEFINED]: null,
-    [Status.UNKNOWN]: null,
+const StatusMapping: Record<TestStepResultStatus, ResultCreateStatusEnum | null> = {
+    [TestStepResultStatus.PASSED]: ResultCreateStatusEnum.PASSED,
+    [TestStepResultStatus.FAILED]: ResultCreateStatusEnum.FAILED,
+    [TestStepResultStatus.SKIPPED]: ResultCreateStatusEnum.SKIPPED,
+    [TestStepResultStatus.AMBIGUOUS]: null,
+    [TestStepResultStatus.PENDING]: null,
+    [TestStepResultStatus.UNDEFINED]: null,
+    [TestStepResultStatus.UNKNOWN]: null,
 };
 
 let customBoundary = '----------------------------';
